@@ -1,0 +1,70 @@
+services:
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /home/prash/MyPC/home-server/volumes/heimdall:/config
+    networks:
+      - home-server
+
+  portainer:
+    image: portainer/portainer-ce:lts
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/prash/MyPC/home-server/volumes/portainer:/data
+    networks:
+      - home-server
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - /home/prash/MyPC/home-server/volumes/nextcloud/html:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=nextcloud_db
+    depends_on:
+      - nextcloud_db
+    networks:
+      - home-server
+      - backend
+
+  nextcloud_db:
+    image: mariadb:latest
+    container_name: nextcloud_db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=supersecret
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=secret
+      - NEXTCLOUD_TRUSTED_DOMAINS=localhost 127.0.0.1 192.168.29.144:8081 home-server.apps:8081
+    volumes:
+      - /home/prash/MyPC/home-server/volumes/nextcloud/db:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  home-server:
+    name: home-server
+    driver: bridge
+  backend:
+    name: backend
+    driver: bridge
