@@ -8,20 +8,9 @@ services:
     volumes:
       - /home/prash/MyPC/home-server/volumes/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
+      - /home/prash/Pictures/wallhaven:/app/public/images
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,192.168.29.144,home-server.apps
-    networks:
-      - home-server
-
-  portainer:
-    image: portainer/portainer-ce:lts
-    container_name: portainer
-    restart: unless-stopped
-    ports:
-      - "9000:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /home/prash/MyPC/home-server/volumes/portainer:/data
+      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,192.168.29.144,home-server.apps,skuldafn.net
     networks:
       - home-server
 
@@ -34,10 +23,10 @@ services:
     volumes:
       - /home/prash/MyPC/home-server/volumes/nextcloud/html:/var/www/html
     environment:
-      - MYSQL_PASSWORD=secret
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_HOST=nextcloud_db
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_HOST=${MYSQL_HOST}
       - NEXTCLOUD_TRUSTED_DOMAINS=localhost 127.0.0.1 192.168.29.144:8081 home-server.apps:8081
     depends_on:
       - nextcloud_db
@@ -50,10 +39,10 @@ services:
     container_name: nextcloud_db
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=supersecret
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - /home/prash/MyPC/home-server/volumes/nextcloud/db:/var/lib/mysql
     networks:
