@@ -1,0 +1,57 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    ports:
+      - "8082:3000"
+    volumes:
+      - /home/prash/MyPC/home-server/volumes/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/prash/Pictures/wallhaven:/app/public/images
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,192.168.29.144:8082,home-server.apps:8082
+    networks:
+      - home-server
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - /home/prash/MyPC/home-server/volumes/nextcloud/html:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - NEXTCLOUD_TRUSTED_DOMAINS=localhost 127.0.0.1 192.168.29.144:8081 home-server.apps:8081
+    depends_on:
+      - nextcloud_db
+    networks:
+      - home-server
+      - backend
+
+  nextcloud_db:
+    image: mariadb:latest
+    container_name: nextcloud_db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - /home/prash/MyPC/home-server/volumes/nextcloud/db:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  home-server:
+    name: home-server
+    driver: bridge
+  backend:
+    name: backend
+    driver: bridge
