@@ -27,9 +27,6 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_HOST=${MYSQL_HOST}
-      - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT}
-      - PHP_UPLOAD_LIMIT=${PHP_UPLOAD_LIMIT}
-      - APACHE_BODY_LIMIT=${APACHE_BODY_LIMIT}
       - NEXTCLOUD_TRUSTED_DOMAINS=localhost 127.0.0.1 192.168.29.144:8081 home-server.apps:8081
     depends_on:
       - nextcloud_db
