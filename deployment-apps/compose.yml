@@ -10,7 +10,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/prash/Pictures/wallhaven:/app/public/images
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,192.168.29.144,home-server.apps,skuldafn.net
+      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,192.168.29.144:8082,home-server.apps:8082
     networks:
       - home-server
 
