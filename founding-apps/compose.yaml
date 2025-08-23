@@ -1,4 +1,43 @@
+# Core infrastructure stack: Pi-hole, Nginx Proxy Manager & Portainer
 services:
+  pihole:
+    image: pihole/pihole:2025.06.2
+    container_name: pihole
+    restart: unless-stopped
+    # DNS ports (TCP & UDP) and DHCP
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "8083:80"
+      - "8443:443"
+    environment:
+      TZ: 'Asia/Kolkata'         
+      FTLCONF_webserver_api_password: 'Prash@1234'
+      FTLCONF_dns_listeningMode: all
+    volumes:
+      - /home/prash/MyPC/home-server/volumes/pihole/etc-pihole:/etc/pihole
+    networks:
+      - dns
+
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - "80:80"       # HTTP proxy
+      - "443:443"     # HTTPS proxy
+      - "81:81"       # Admin UI
+    environment:
+      INITIAL_ADMIN_EMAIL: admin@home.com
+      INITIAL_ADMIN_PASSWORD: Prash@1234
+    volumes:
+      - /home/prash/MyPC/home-server/volumes/npm/data:/data
+      - /home/prash/MyPC/home-server/volumes/npm/letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy
+      - dns
+
   portainer:
     image: portainer/portainer-ce:lts
     container_name: portainer
@@ -10,11 +49,13 @@ services:
       - /home/prash/MyPC/home-server/volumes/portainer:/data
     networks:
       - home-server
-      
+      - proxy
+
 networks:
+  dns:
+    driver: bridge    # internal DNS network for Pi-hole
+  proxy:
+    driver: bridge    # network for reverse proxy manager
   home-server:
     name: home-server
-    driver: bridge
-  backend:
-    name: backend
     driver: bridge
