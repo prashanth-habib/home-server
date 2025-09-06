@@ -9,7 +9,6 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp"
-      - "8083:80"
       - "8443:443"
     environment:
       TZ: 'Asia/Kolkata'         
@@ -29,7 +28,7 @@ services:
       - "443:443"     # HTTPS proxy
       - "81:81"       # Admin UI
     environment:
-      INITIAL_ADMIN_EMAIL: admin@home.com
+      INITIAL_ADMIN_EMAIL: admin@home.lan
       INITIAL_ADMIN_PASSWORD: Prash@1234
     volumes:
       - /home/prash/MyPC/home-server/volumes/npm/data:/data
@@ -42,8 +41,8 @@ services:
     image: portainer/portainer-ce:lts
     container_name: portainer
     restart: unless-stopped
-    ports:
-      - "9000:9000"
+    expose:
+      - 9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/prash/MyPC/home-server/volumes/portainer:/data
