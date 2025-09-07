@@ -18,6 +18,7 @@ services:
         portainer.home.lan,main.lan
         npm.home.lan,main.lan
         pihole.home.lan,main.lan
+        home.lan,main.lan
     volumes:
       - pihole_data:/etc/pihole
     networks:
@@ -41,6 +42,11 @@ services:
     networks:
       - proxy
       - dns
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:81/api/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   portainer:
     image: portainer/portainer-ce:lts
@@ -60,7 +66,8 @@ services:
     image: alpine:3.20
     container_name: npm-init
     depends_on:
-      - nginx-proxy-manager
+      nginx-proxy-manager:
+        condition: service_healthy
     volumes:
       - ./npm-init/init-proxy-hosts.sh:/init-proxy-hosts.sh:ro
     environment:
