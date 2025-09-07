@@ -29,6 +29,7 @@ home-server/
   - **Required software:**
     - [Docker Engine](https://docs.docker.com/engine/install/)
     - [Docker Compose Plugin](https://docs.docker.com/compose/install/linux/)
+  - Also read [Disable systemd-resolved port 53](https://docs.pi-hole.net/docker/tips-and-tricks/)
 
 ### Setup Instructions
 1. Clone the repository   
