@@ -1,5 +1,24 @@
 # Core infrastructure stack: Pi-hole, Nginx Proxy Manager & Portainer
 services:
+  pihole-init:
+    image: alpine:3.20
+    container_name: pihole-init
+    command: >
+      sh -c "
+        apk add --no-cache bash &&
+        echo '${HOST_IP} main.lan' > /etc/pihole/custom.list &&
+        echo 'cname=pihole.main.lan,main.lan' >> /etc/pihole/custom.list &&
+        echo 'cname=npm.main.lan,main.lan' >> /etc/pihole/custom.list &&
+        echo 'cname=portainer.main.lan,main.lan' >> /etc/pihole/custom.list
+      "
+    volumes:
+      - pihole_data:/etc/pihole
+    environment:
+      HOST_IP: ${HOST_IP}
+    networks:
+      - dns
+    restart: "no"
+
   pihole:
     image: pihole/pihole:2025.06.2
     container_name: pihole
@@ -11,12 +30,10 @@ services:
       - "67:67/udp"
     environment:
       TZ: 'Asia/Kolkata'         
-      FTLCONF_webserver_api_password: 'Prash@1234'
+      FTLCONF_webserver_api_password: '${PIHOLE_PASS}'
       FTLCONF_dns_listeningMode: all
     volumes:
-      - ../../home-server-data/pihole/etc-pihole:/etc/pihole
-      - ./pihole-config/custom.list:/etc/pihole/custom.list:ro
-      - ./pihole-config/05-pihole-custom-cname.conf:/etc/dnsmasq.d/05-pihole-custom-cname.conf:ro
+      - pihole_data:/etc/pihole
     networks:
       - dns
       - proxy
@@ -30,11 +47,11 @@ services:
       - "443:443"     # HTTPS proxy
       - "81:81"       # Admin UI
     environment:
-      INITIAL_ADMIN_EMAIL: admin@home.lan
-      INITIAL_ADMIN_PASSWORD: Prash@1234
+      INITIAL_ADMIN_EMAIL: '${NPM_USER}'
+      INITIAL_ADMIN_PASSWORD: '${NPM_PASS}'
     volumes:
-      - ../../home-server-data/npm/data:/data
-      - ../../home-server-data/npm/letsencrypt:/etc/letsencrypt
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
     networks:
       - proxy
       - dns
@@ -47,7 +64,7 @@ services:
       - 9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../../home-server-data/portainer:/data
+      - portainer-data:/data
     networks:
       - home-server
       - proxy
@@ -61,8 +78,8 @@ services:
     volumes:
       - ./npm-init/init-proxy-hosts.sh:/init-proxy-hosts.sh:ro
     environment:
-      NPM_USER: admin@home.lan
-      NPM_PASS: Prash@1234
+      NPM_USER: '${NPM_USER}'
+      NPM_PASS: '${NPM_PASS}'
     command: >
       sh -c "apk add --no-cache curl jq && sh /init-proxy-hosts.sh"
     networks:
@@ -79,3 +96,13 @@ networks:
   home-server:
     name: home-server
     driver: bridge
+
+volumes:
+  pihole_data:
+    name: pihole_data
+  npm_data:
+    name: npm_data
+  npm_letsencrypt:
+    name: npm_letsencrypt
+  portainer_data:
+    name: portainer_data
