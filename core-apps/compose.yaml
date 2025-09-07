@@ -9,13 +9,12 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp"
-      - "8443:443"
     environment:
       TZ: 'Asia/Kolkata'         
       FTLCONF_webserver_api_password: 'Prash@1234'
       FTLCONF_dns_listeningMode: all
     volumes:
-      - /home/prash/MyPC/home-server/volumes/pihole/etc-pihole:/etc/pihole
+      - ../../home-server-data/pihole/etc-pihole:/etc/pihole
     networks:
       - dns
 
@@ -31,8 +30,8 @@ services:
       INITIAL_ADMIN_EMAIL: admin@home.lan
       INITIAL_ADMIN_PASSWORD: Prash@1234
     volumes:
-      - /home/prash/MyPC/home-server/volumes/npm/data:/data
-      - /home/prash/MyPC/home-server/volumes/npm/letsencrypt:/etc/letsencrypt
+      - ../../home-server-data/npm/data:/data
+      - ../../home-server-data/npm/letsencrypt:/etc/letsencrypt
     networks:
       - proxy
       - dns
@@ -45,7 +44,7 @@ services:
       - 9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/prash/MyPC/home-server/volumes/portainer:/data
+      - ../../home-server-data/portainer:/data
     networks:
       - home-server
       - proxy
