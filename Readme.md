@@ -1,5 +1,5 @@
 ## Home Server with Docker Compose
-This repository provides a **Docker Compose–based home server setup** with essential self-hosting tools:
+This repository provides a **Docker Compose-based home server setup** with essential self-hosting tools:
 1. [Pi-hole](https://pi-hole.net/) - Network-wide ad blocker & DNS server
 2. [Nginx Proxy Manager](https://nginxproxymanager.com/) – Reverse proxy with SSL management
 3. [Portainer](https://www.portainer.io/) – Docker management UI
