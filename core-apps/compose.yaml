@@ -15,8 +15,11 @@ services:
       FTLCONF_dns_listeningMode: all
     volumes:
       - ../../home-server-data/pihole/etc-pihole:/etc/pihole
+      - ./pihole-config/custom.list:/etc/pihole/custom.list:ro
+      - ./pihole-config/05-pihole-custom-cname.conf:/etc/dnsmasq.d/05-pihole-custom-cname.conf:ro
     networks:
       - dns
+      - proxy
 
   nginx-proxy-manager:
     image: jc21/nginx-proxy-manager:latest
@@ -48,6 +51,22 @@ services:
     networks:
       - home-server
       - proxy
+
+  # Configure Nginx Proxy Manager with initial proxy host records
+  npm-init:
+    image: curlimages/curl:latest
+    container_name: npm-init
+    depends_on:
+      - nginx-proxy-manager
+    volumes:
+      - ./npm-init/init-proxy-hosts.sh:/init-proxy-hosts.sh:ro
+    environment:
+      NPM_USER: admin@home.lan
+      NPM_PASS: Prash@1234
+    command: [ "sh", "/init-proxy-hosts.sh" ]
+    networks:
+      - proxy
+    restart: "no"
 
 networks:
   dns:
