@@ -4,19 +4,25 @@ services:
     image: pihole/pihole:2025.06.2
     container_name: pihole
     restart: unless-stopped
-    # DNS ports (TCP & UDP) and DHCP
     ports:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp"
     environment:
-      TZ: 'Asia/Kolkata'         
-      FTLCONF_webserver_api_password: 'Prash@1234'
+      TZ: 'Asia/Kolkata'
+      FTLCONF_webserver_api_password: '${PIHOLE_PASS}'
       FTLCONF_dns_listeningMode: all
+      FTLCONF_dns_hosts: |
+        ${HOST_IP} main.lan
+      FTLCONF_dns_cnameRecords: |
+        portainer.home.lan,main.lan
+        npm.home.lan,main.lan
+        pihole.home.lan,main.lan
     volumes:
-      - ../../home-server-data/pihole/etc-pihole:/etc/pihole
+      - pihole_data:/etc/pihole
     networks:
       - dns
+      - proxy
 
   nginx-proxy-manager:
     image: jc21/nginx-proxy-manager:latest
@@ -27,11 +33,11 @@ services:
       - "443:443"     # HTTPS proxy
       - "81:81"       # Admin UI
     environment:
-      INITIAL_ADMIN_EMAIL: admin@home.lan
-      INITIAL_ADMIN_PASSWORD: Prash@1234
+      INITIAL_ADMIN_EMAIL: ${NPM_USER}
+      INITIAL_ADMIN_PASSWORD: ${NPM_PASS}
     volumes:
-      - ../../home-server-data/npm/data:/data
-      - ../../home-server-data/npm/letsencrypt:/etc/letsencrypt
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
     networks:
       - proxy
       - dns
@@ -44,16 +50,45 @@ services:
       - 9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../../home-server-data/portainer:/data
+      - portainer_data:/data
     networks:
       - home-server
       - proxy
 
+  # Configure Nginx Proxy Manager with initial proxy host records
+  npm-init:
+    image: alpine:3.20
+    container_name: npm-init
+    depends_on:
+      - nginx-proxy-manager
+    volumes:
+      - ./npm-init/init-proxy-hosts.sh:/init-proxy-hosts.sh:ro
+    environment:
+      NPM_USER: ${NPM_USER}
+      NPM_PASS: ${NPM_PASS}
+    command: >
+      sh -c "apk add --no-cache curl jq && sh /init-proxy-hosts.sh"
+    networks:
+      - proxy
+    restart: "no"
+
 networks:
   dns:
-    driver: bridge    # internal DNS network for Pi-hole
+    name: dns
+    driver: bridge
   proxy:
-    driver: bridge    # network for reverse proxy manager
+    name: proxy
+    driver: bridge
   home-server:
     name: home-server
     driver: bridge
+
+volumes:
+  pihole_data:
+    name: pihole_data
+  npm_data:
+    name: npm_data
+  npm_letsencrypt:
+    name: npm_letsencrypt
+  portainer_data:
+    name: portainer_data
