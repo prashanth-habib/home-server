@@ -10,7 +10,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./resources/thehomepage-custom-images:/app/public/images:ro
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,${HOST_IP},home-server.apps,home.lan
+      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,${HOST_IP},homepage,home.lan
     networks:
       - home-server
       - proxy
