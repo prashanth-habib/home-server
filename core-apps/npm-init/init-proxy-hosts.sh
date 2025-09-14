@@ -59,5 +59,6 @@ create_proxy_host "home.lan" "homepage" 3000
 create_proxy_host "pihole.home.lan" "pihole" 80
 create_proxy_host "npm.home.lan" "nginx-proxy-manager" 81
 create_proxy_host "portainer.home.lan" "portainer" 9000
+create_proxy_host "gitea.home.lan" "gitea" 3000
 
 echo "Proxy hosts created successfully!"
