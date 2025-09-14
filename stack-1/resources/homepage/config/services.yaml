@@ -1,0 +1,24 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services/
+
+- CORE APPS:
+    - PORTAINER:
+        href: http://portainer.home.lan/
+        description: Monitor and manage your Docker environment.
+    - NGINX PROXY MANAGER:
+        href: http://npm.home.lan/
+        description: Manage reverse proxies, SSL certificates, and domain routing for your services.
+    - PIHOLE:
+        href: http://pihole.home.lan/admin/
+        description: Network-wide DNS sinkhole to block ads and manage local Domain records.
+
+- STACK - 1:
+    - GITEA:
+        href: http://gitea.home.lan/
+        description: A light-weight self-hosted Git based source code management tool.
+
+- My Third Group:
+    - My Third Service:
+        href: http://localhost/
+        description: Homepage is 😎
