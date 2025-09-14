@@ -19,6 +19,7 @@ services:
         npm.home.lan,main.lan
         pihole.home.lan,main.lan
         home.lan,main.lan
+        gitea.home.lan,main.lan
     volumes:
       - pihole_data:/etc/pihole
     networks:
