@@ -20,6 +20,7 @@ services:
         pihole.home.lan,main.lan
         home.lan,main.lan
         gitea.home.lan,main.lan
+        uptime-kuma.home.lan,main.lan
     volumes:
       - pihole_data:/etc/pihole
     networks:

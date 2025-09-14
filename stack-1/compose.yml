@@ -35,6 +35,19 @@ services:
     networks:
       - gitea
       - proxy
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    expose:
+      - "3001"
+    volumes:
+      - uptime-kuma:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy
+
   postgres:
     image: docker.io/library/postgres:14
     container_name: postgres
@@ -58,3 +71,7 @@ networks:
   gitea:
     name: gitea
     external: false
+
+volumes:
+  uptime-kuma:
+    name: uptime-kuma
