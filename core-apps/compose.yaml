@@ -56,9 +56,9 @@ services:
       - 3552:3552
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - arcane-data:/app/data
+      - arcane_data:/app/data
     environment:
-      - APP_URL=http://localhost:3552
+      - APP_URL=http://arcane.home.lan
       - PUID=1000
       - PGID=1000
       - ENCRYPTION_KEY=${ARCANE_ENCRYPTION_KEY}
@@ -69,7 +69,7 @@ services:
       - POSTGRES_USER=arcane
       - POSTGRES_PASSWORD=${ARCANE_DB_PASSWORD}
       - OIDC_ENABLED=false
-      - DATABASE_URL=postgresql://arcane:${ARCANE_DB_PASSWORD}@postgres:5432/arcane
+      - DATABASE_URL=postgresql://arcane:${ARCANE_DB_PASSWORD}@arcane-postgres:5432/arcane
     depends_on:
       - postgres
     networks:
@@ -85,9 +85,11 @@ services:
       - POSTGRES_USER=arcane
       - POSTGRES_PASSWORD=${ARCANE_DB_PASSWORD}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      - proxy
 
   # Configure Nginx Proxy Manager with initial proxy host records
   npm-init:
@@ -125,3 +127,7 @@ volumes:
     name: npm_data
   npm_letsencrypt:
     name: npm_letsencrypt
+  arcane_data:
+    name: arcane_data
+  postgres_data:
+    name: postgres_data
