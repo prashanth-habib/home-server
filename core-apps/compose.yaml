@@ -116,9 +116,6 @@ networks:
   proxy:
     name: proxy
     driver: bridge
-  home-server:
-    name: home-server
-    driver: bridge
 
 volumes:
   pihole_data:
