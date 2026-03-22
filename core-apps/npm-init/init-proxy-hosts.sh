@@ -58,7 +58,7 @@ create_proxy_host() {
 create_proxy_host "home.lan" "homepage" 3000
 create_proxy_host "pihole.home.lan" "pihole" 80
 create_proxy_host "npm.home.lan" "nginx-proxy-manager" 81
-create_proxy_host "portainer.home.lan" "portainer" 9000
+create_proxy_host "arcane.home.lan" "arcane" 3552
 create_proxy_host "gitea.home.lan" "gitea" 3000
 create_proxy_host "uptime-kuma.home.lan" "uptime-kuma" 3001
 
