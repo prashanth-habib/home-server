@@ -2,16 +2,16 @@
 This repository provides a **Docker Compose-based home server setup** with essential self-hosting tools:
 1. [Pi-hole](https://pi-hole.net/) - Network-wide ad blocker & DNS server
 2. [Nginx Proxy Manager](https://nginxproxymanager.com/) – Reverse proxy with SSL management
-3. [Portainer](https://www.portainer.io/) – Docker management UI
+3. [Arcane](https://getarcane.app/) – Docker management UI
 
 Two stacks are included:
 - `core-apps/` → The **main infrastructure stack**
-- `stack-1/` → A secondary stack of apps/service build on main infrastructure stack which can be maintained by Portainer.
+- `stack-1/` → A secondary stack of apps/service build on main infrastructure stack which can be maintained by Arcane.
 
 ### Repository Structure
 home-server/  
 ├── core-apps/  
-│   ├── compose.yaml            # Core apps: Pi-hole, Nginx Proxy Manager, Portainer  
+│   ├── compose.yaml            # Core apps: Pi-hole, Nginx Proxy Manager, Arcane  
 │   └── npm-init/  
 │       └── init-proxy-hosts.sh # Script to initialize proxy hosts in NPM  
 ├── stack-1/  
@@ -56,14 +56,14 @@ In `core-apps/` (and/or `stack-1/`), create a `.env` file with your own values:
     ```
     docker compose up -d
     ```
-This will start Pi-hole, Nginx Proxy Manager, Portainer, and initialize default proxy hosts.   
+This will start Pi-hole, Nginx Proxy Manager, Arcane, and initialize default proxy hosts.   
 
 4. Access the services   
 
 | Service              | URL                             | Credentials                     |
 |----------------------|---------------------------------|---------------------------------|
 | Nginx Proxy Manager  | `http://npm.home.lan`           | `${NPM_USER}` / `${NPM_PASS}`   |
-| Portainer            | `http://portainer.home.lan`     | Set up on first login           |
+| Arcane               | `http://arcane.home.lan`        | Set up on first login           |
 | Pi-hole              | `http://pihole.home.lan/admin`  | `${PIHOLE_PASS}`                |
 
 ### Customization
@@ -82,6 +82,6 @@ docker compose down -v
 ```
 
 ### Notes & Caveats
-- Designed and tested **only on Ubuntu/Linux**.
+- Designed and tested **only on Ubuntu and Debian**.
 - May work on **Windows (Docker Desktop + WSL2)** but untested. Networking behavior (especially LAN DNS resolution) might differ.
 - Ensure your router/DNS settings point to the host running Pi-hole for full network-wide blocking.
