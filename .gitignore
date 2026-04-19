@@ -1,3 +1,4 @@
 **/.env
 stack-1/data/
-stack-1/resources/homepage/config/logs
+core-apps/resources/homepage/config/logs
+.codex

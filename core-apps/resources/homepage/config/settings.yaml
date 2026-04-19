@@ -1,0 +1,13 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/settings/
+
+title: Home Server
+
+layout:
+  Core Apps:
+    style: row
+    columns: 3
+  Stack 1:
+    style: row
+    columns: 3

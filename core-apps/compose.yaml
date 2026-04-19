@@ -1,5 +1,20 @@
 # Core infrastructure stack: Pi-hole, Nginx Proxy Manager & Arcane
 services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    expose:
+      - "3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./resources/homepage/config:/app/config
+      - ./resources/homepage/images:/app/public/images:ro
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,${HOST_IP},homepage,home.lan
+    networks:
+      - proxy
+
   pihole:
     image: pihole/pihole:2025.06.2
     container_name: pihole

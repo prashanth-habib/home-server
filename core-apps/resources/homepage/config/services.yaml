@@ -1,0 +1,25 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services/
+
+- Core Apps:
+    - Homepage:
+        href: http://home.lan
+        description: Landing dashboard for your home-server apps.
+    - Nginx Proxy Manager:
+        href: http://npm.home.lan
+        description: Reverse proxy and SSL certificate management.
+    - Pi-hole:
+        href: http://pihole.home.lan/admin
+        description: DNS filtering and local DNS records.
+    - Arcane:
+        href: http://arcane.home.lan
+        description: Docker management UI.
+
+- Stack 1:
+    - Gitea:
+        href: http://gitea.home.lan
+        description: Self-hosted Git service.
+    - Uptime Kuma:
+        href: http://uptime-kuma.home.lan
+        description: Service and endpoint status monitoring.
