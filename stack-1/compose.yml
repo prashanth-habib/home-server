@@ -17,19 +17,45 @@ services:
       - GITEA__database__NAME=gitea
       - GITEA__database__USER=${GITEA_DB_USER}
       - GITEA__database__PASSWD=${GITEA_DB_PWD}
+      # Enable Gitea Actions (CI/CD)
+      - GITEA__actions__ENABLED=true
+      # Enable the built-in Package + Container Registry
+      - GITEA__packages__ENABLED=true
+      # Required for container registry auth to work correctly behind NPM reverse proxy
+      - GITEA__server__ROOT_URL=http://gitea.home.lan
     networks:
       - gitea
       - proxy
 
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
+  gitea-runner:
+    image: docker.io/gitea/act_runner:latest
+    container_name: gitea-runner
+    restart: unless-stopped
+    depends_on:
+      - gitea
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitea-runner-data:/data
+    environment:
+      - GITEA_INSTANCE_URL=http://gitea:3000
+      - GITEA_RUNNER_REGISTRATION_TOKEN=${GITEA_RUNNER_REGISTRATION_TOKEN}
+      - GITEA_RUNNER_NAME=home-runner
+    networks:
+      - gitea
+
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
     restart: unless-stopped
     expose:
-      - "3001"
+      - "8443"
     volumes:
-      - uptime-kuma:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - code-server-data:/config
+    environment:
+      - PUID=${CODE_SERVER_PUID}
+      - PGID=${CODE_SERVER_PGID}
+      - TZ=${TZ}
+      - PASSWORD=${CODE_SERVER_PASSWORD}
     networks:
       - proxy
 
@@ -59,5 +85,7 @@ volumes:
     name: gitea-data
   gitea-postgres-data:
     name: gitea-postgres-data
-  uptime-kuma:
-    name: uptime-kuma
+  gitea-runner-data:
+    name: gitea-runner-data
+  code-server-data:
+    name: code-server-data
