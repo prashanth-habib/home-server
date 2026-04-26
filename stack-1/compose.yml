@@ -56,6 +56,7 @@ services:
       - PGID=${CODE_SERVER_PGID}
       - TZ=${TZ}
       - PASSWORD=${CODE_SERVER_PASSWORD}
+      - SUDO_PASSWORD=${CODE_SERVER_SUDO_PASSWORD}
     networks:
       - proxy
 
