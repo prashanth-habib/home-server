@@ -1,6 +1,6 @@
 services:
   gitea:
-    image: docker.gitea.com/gitea:1.24.6
+    image: docker.gitea.com/gitea:1.26
     container_name: gitea
     depends_on:
       - postgres
