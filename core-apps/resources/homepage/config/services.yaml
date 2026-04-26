@@ -20,6 +20,6 @@
     - Gitea:
         href: http://gitea.home.lan
         description: Self-hosted Git service.
-    - Uptime Kuma:
-        href: http://uptime-kuma.home.lan
-        description: Service and endpoint status monitoring.
+    - Code-Server:
+        href: http://code.home.lan
+        description: Online code editor (VS Code).

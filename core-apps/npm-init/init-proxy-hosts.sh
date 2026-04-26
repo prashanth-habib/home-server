@@ -60,6 +60,6 @@ create_proxy_host "pihole.home.lan" "pihole" 80
 create_proxy_host "npm.home.lan" "nginx-proxy-manager" 81
 create_proxy_host "arcane.home.lan" "arcane" 3552
 create_proxy_host "gitea.home.lan" "gitea" 3000
-create_proxy_host "uptime-kuma.home.lan" "uptime-kuma" 3001
+create_proxy_host "code.home.lan" "code-server" 8443
 
 echo "Proxy hosts created successfully!"
