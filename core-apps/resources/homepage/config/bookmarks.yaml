@@ -1,0 +1,11 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/bookmarks/
+
+- Docs:
+    - Homepage:
+        - abbr: HP
+          href: https://gethomepage.dev
+    - Docker:
+        - abbr: DK
+          href: https://docs.docker.com

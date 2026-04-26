@@ -1,19 +1,4 @@
 services:
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    restart: unless-stopped
-    expose:
-      - "3000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./resources/homepage/config:/app/config
-      - ./resources/homepage/custom-images:/app/public/images:ro
-    environment:
-      HOMEPAGE_ALLOWED_HOSTS: localhost,127.0.0.1,${HOST_IP},homepage,home.lan
-    networks:
-      - home-server
-      - proxy
   gitea:
     image: docker.gitea.com/gitea:1.24.6
     container_name: gitea
@@ -23,7 +8,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - ./data/gitea:/data
+      - gitea-data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -59,11 +44,9 @@ services:
     networks:
       - gitea
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - gitea-postgres-data:/var/lib/postgresql/data
 
 networks:
-  home-server:
-    name: home-server
   proxy:
     name: proxy
     external: true
@@ -72,5 +55,9 @@ networks:
     external: false
 
 volumes:
+  gitea-data:
+    name: gitea-data
+  gitea-postgres-data:
+    name: gitea-postgres-data
   uptime-kuma:
     name: uptime-kuma
