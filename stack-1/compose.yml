@@ -5,8 +5,8 @@ services:
     depends_on:
       - postgres
     restart: unless-stopped
-    expose:
-      - "3000"
+    ports:
+      - "3000:3000"
     volumes:
       - gitea-data:/data
       - /etc/timezone:/etc/timezone:ro
@@ -47,8 +47,8 @@ services:
     image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
     restart: unless-stopped
-    expose:
-      - "8443"
+    ports:
+      - "8443:8443"
     volumes:
       - code-server-data:/config
     environment:

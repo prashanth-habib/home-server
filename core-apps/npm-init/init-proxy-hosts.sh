@@ -55,11 +55,11 @@ create_proxy_host() {
     }' > /dev/null
 }
 
-create_proxy_host "home.lan" "homepage" 3000
-create_proxy_host "pihole.home.lan" "pihole" 80
-create_proxy_host "npm.home.lan" "nginx-proxy-manager" 81
-create_proxy_host "arcane.home.lan" "arcane" 3552
-create_proxy_host "gitea.home.lan" "gitea" 3000
-create_proxy_host "code.home.lan" "code-server" 8443
+create_proxy_host "home.lan" "${CORE_HOST_IP}" 3030
+create_proxy_host "pihole.home.lan" "${CORE_HOST_IP}" 8080
+create_proxy_host "npm.home.lan" "${CORE_HOST_IP}" 81
+create_proxy_host "arcane.home.lan" "${CORE_HOST_IP}" 3552
+create_proxy_host "gitea.home.lan" "${STACK_1_HOST_IP}" 3000
+create_proxy_host "code.home.lan" "${STACK_1_HOST_IP}" 8443
 
 echo "Proxy hosts created successfully!"
