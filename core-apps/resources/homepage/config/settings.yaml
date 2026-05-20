@@ -5,9 +5,15 @@
 title: Home Server
 
 layout:
-  Core Apps:
+  Core:
+    style: column
+    # columns: 3
+  Code:
+    style: column
+    # columns: 3
+  Media:
+    style: column
+    # columns: 3
+  Docs:
     style: row
-    columns: 3
-  Stack 1:
-    style: row
-    columns: 3
+    columns: 2

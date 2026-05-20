@@ -31,6 +31,7 @@ services:
       FTLCONF_dns_hosts: |
         ${CORE_HOST_IP} core.lan
         ${STACK_1_HOST_IP} stack1.lan
+        ${STACK_2_HOST_IP} stack2.lan
       FTLCONF_dns_cnameRecords: |
         home.lan,core.lan
         arcane.home.lan,core.lan
@@ -38,6 +39,7 @@ services:
         pihole.home.lan,core.lan
         gitea.home.lan,stack1.lan
         code.home.lan,stack1.lan
+        jellyfin.home.lan,stack2.lan
     volumes:
       - pihole_data:/etc/pihole
     networks:
@@ -124,6 +126,7 @@ services:
       NPM_PASS: ${NPM_PASS}
       CORE_HOST_IP : ${CORE_HOST_IP}
       STACK_1_HOST_IP : ${STACK_1_HOST_IP}
+      STACK_2_HOST_IP : ${STACK_2_HOST_IP}
     command: >
       sh -c "apk add --no-cache curl jq && sh /init-proxy-hosts.sh"
     networks:
