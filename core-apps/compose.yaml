@@ -30,16 +30,14 @@ services:
       FTLCONF_dns_listeningMode: all
       FTLCONF_dns_hosts: |
         ${CORE_HOST_IP} core.lan
-        ${STACK_1_HOST_IP} stack1.lan
-        ${STACK_2_HOST_IP} stack2.lan
       FTLCONF_dns_cnameRecords: |
         home.lan,core.lan
         arcane.home.lan,core.lan
         npm.home.lan,core.lan
         pihole.home.lan,core.lan
-        gitea.home.lan,stack1.lan
-        code.home.lan,stack1.lan
-        jellyfin.home.lan,stack2.lan
+        gitea.home.lan,core.lan
+        code.home.lan,core.lan
+        jellyfin.home.lan,core.lan
     volumes:
       - pihole_data:/etc/pihole
     networks:
