@@ -10,17 +10,14 @@ services:
     volumes:
       - config:/config
       - cache:/cache
+      # Optional media mounts (set MOVIES_DIR/SHOWS_DIR in .env)
+      # Use absolute host paths for these variables.
       # - type: bind
-      #   source: /path/to/media
-      #   target: /media
+      #   source: ${MOVIES_DIR}
+      #   target: /movies
       # - type: bind
-      #   source: /path/to/media2
-      #   target: /media2
-      #   read_only: true
-      # Optional - extra fonts to be used during transcoding with subtitle burn-in
-      # - type: bind
-      #   source: /path/to/fonts
-      #   target: /usr/local/share/fonts/custom
+      #   source: ${SHOWS_DIR}
+      #   target: /shows
       #   read_only: true
     restart: 'unless-stopped'
     # Optional - alternative address used for autodiscovery
