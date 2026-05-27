@@ -12,13 +12,13 @@ services:
       - cache:/cache
       # Optional media mounts (set MOVIES_DIR/SHOWS_DIR in .env)
       # Use absolute host paths for these variables.
-      # - type: bind
-      #   source: ${MOVIES_DIR}
-      #   target: /movies
-      # - type: bind
-      #   source: ${SHOWS_DIR}
-      #   target: /shows
-      #   read_only: true
+      - type: bind
+        source: ${MOVIES_DIR}
+        target: /movies
+      - type: bind
+        source: ${SHOWS_DIR}
+        target: /shows
+      # Add more media mounts here
     restart: 'unless-stopped'
     # Optional - alternative address used for autodiscovery
     environment:
