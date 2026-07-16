@@ -62,5 +62,6 @@ create_proxy_host "arcane.home.lan" "${CORE_HOST_IP}" 3552
 create_proxy_host "gitea.home.lan" "${STACK_1_HOST_IP}" 3000
 create_proxy_host "code.home.lan" "${STACK_1_HOST_IP}" 8443
 create_proxy_host "jellyfin.home.lan" "${STACK_2_HOST_IP}" 8096
+create_proxy_host "upsnap.home.lan" "${STACK_3_HOST_IP}" 8090
 
 echo "Proxy hosts created successfully!"
