@@ -1,0 +1,23 @@
+services:
+  upsnap:
+    image: ghcr.io/seriousm4x/upsnap:5
+    container_name: upsnap
+    network_mode: host
+    restart: unless-stopped
+    cap_add:
+      - NET_RAW
+    cap_drop:
+      - ALL
+    volumes:
+      - upsnap_data:/app/pb_data
+    environment:
+      - TZ=${TZ}
+      - UPSNAP_HTTP_LISTEN=0.0.0.0:8090
+      - UPSNAP_INTERVAL=*/10 * * * * *
+      - UPSNAP_WEBSITE_TITLE=UpSnap
+    security_opt:
+      - no-new-privileges=true
+
+volumes:
+  upsnap_data:
+    name: upsnap_data
