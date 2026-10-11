@@ -44,19 +44,16 @@ services:
       - gitea
 
   code-server:
-    image: lscr.io/linuxserver/code-server:latest
+    image: prashanthhabib/code-server:4.141.0
     container_name: code-server
     restart: unless-stopped
     ports:
-      - "8443:8443"
+      - "8443:8080"
     volumes:
-      - code-server-data:/config
+      - code-server-data:/home/${CODE_SERVER_USERNAME}
     environment:
-      - PUID=${CODE_SERVER_PUID}
-      - PGID=${CODE_SERVER_PGID}
-      - TZ=${TZ}
+      - USER_NAME=${CODE_SERVER_USERNAME}
       - PASSWORD=${CODE_SERVER_PASSWORD}
-      - SUDO_PASSWORD=${CODE_SERVER_SUDO_PASSWORD}
     networks:
       - proxy
 
