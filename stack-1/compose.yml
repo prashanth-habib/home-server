@@ -52,7 +52,7 @@ services:
     volumes:
       - code-server-data:/home/${CODE_SERVER_USERNAME}
     environment:
-      - USER_NAME=${CODE_SERVER_USERNAME}
+      - USERNAME=${CODE_SERVER_USERNAME}
       - PASSWORD=${CODE_SERVER_PASSWORD}
     networks:
       - proxy
