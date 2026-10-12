@@ -46,7 +46,7 @@ services:
   code-server:
     image: prashanthhabib/code-server:4.141.0
     container_name: code-server
-    hostname: ${HOSTNAME}
+    hostname: ${CODE_SERVER_HOSTNAME}
     restart: unless-stopped
     ports:
       - "8443:8080"
